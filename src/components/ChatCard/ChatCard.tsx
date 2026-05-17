@@ -11,20 +11,25 @@ interface Message {
   avatar: string;
 }
 
+interface OnlineUser {
+  nickname: string;
+  avatar: string;
+}
+
 export default function ChatCard() {
   const [nickname, setNickname] = useState<string>('');
-  const [userAvatar, setUserAvatar] = useState<string>('🎧'); // Default avatar
+  const [userAvatar, setUserAvatar] = useState<string>('🎧'); 
   const [isEntered, setIsEntered] = useState<boolean>(false);
   const [inputText, setInputText] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   
-  // ΚΑΘΑΡΙΣΜΟΣ: Το chat ξεκινάει πλέον άδειο χωρίς ghost μηνύματα
   const [messages, setMessages] = useState<Message[]>([]);
+  // Live λίστα χρηστών που θα γεμίζει dynamic
+  const [activeUsers, setActiveUsers] = useState<OnlineUser[]>([]);
 
-  // Το ref στοχεύει το scrollable container των μηνυμάτων
   const messageContainerRef = useRef<HTMLDivElement>(null);
 
-  // 1. Σύνδεση στο Pusher ΜΟΛΙΣ μπει ο χρήστης στο chat
+  // 1. Σύνδεση στο Pusher & Listeners
   useEffect(() => {
     if (!isEntered) return;
 
@@ -33,24 +38,44 @@ export default function ChatCard() {
     });
 
     const channel = pusher.subscribe('spotx-stream');
+
+    // Listener για νέα μηνύματα
     channel.bind('new-message', (data: Message) => {
-      // Αποφεύγουμε τα διπλά μηνύματα για τον ίδιο τον αποστολέα αν έρθει από το broadcast
       setMessages((prev) => {
-        if (prev.length > 0 && prev[prev.length - 1].text === data.text && prev[prev.length - 1].nickname === data.nickname) {
+        // Απόλυτο φίλτρο για να μην μπαίνουν διπλά μηνύματα
+        if (prev.length > 0 && 
+            prev[prev.length - 1].text === data.text && 
+            prev[prev.length - 1].nickname === data.nickname) {
           return prev;
         }
         return [...prev, data];
       });
     });
 
+    // Listener για όταν μπαίνει νέος χρήστης
+    channel.bind('user-joined', (data: OnlineUser) => {
+      setActiveUsers((prev) => {
+        // Αν υπάρχει ήδη στη λίστα, μην τον ξαναβάζεις
+        if (prev.some(u => u.nickname === data.nickname)) return prev;
+        return [...prev, data];
+      });
+    });
+
+    // Μόλις συνδεθούμε, στέλνουμε σήμα στο API ότι μπήκαμε
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'join', nickname, avatar: userAvatar }),
+    }).catch(err => console.error(err));
+
     return () => {
       channel.unbind_all();
       channel.unsubscribe();
       pusher.disconnect();
     };
-  }, [isEntered]);
+  }, [isEntered, nickname, userAvatar]);
 
-  // Αυτόματο scroll ΜΟΝΟ μέσα στο container
+  // Αυτόματο scroll στα μηνύματα
   useEffect(() => {
     if (messageContainerRef.current) {
       messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
@@ -64,20 +89,18 @@ export default function ChatCard() {
     }
   };
 
-  // 2. Αποστολή Μηνύματος (Push στο API)
+  // 2. Αποστολή Μηνύματος (ΜΟΝΟ στο API - Το Pusher το εμφανίζει)
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputText.trim()) return;
 
-    const newMsg: Message = {
-      nickname: nickname,
+    const msgPayload = {
+      type: 'message', // Διαχωρίζουμε το message από το join
       text: inputText,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      username: nickname,
       avatar: userAvatar
     };
 
-    // Optimistic update: Το εμφανίζουμε αμέσως στον εαυτό μας
-    setMessages((prev) => [...prev, newMsg]);
     setInputText('');
     setShowEmojiPicker(false);
 
@@ -85,11 +108,7 @@ export default function ChatCard() {
       await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          text: newMsg.text,
-          username: newMsg.nickname,
-          avatar: newMsg.avatar
-        }),
+        body: JSON.stringify(msgPayload),
       });
     } catch (err) {
       console.error('Failed to broadcast message:', err);
@@ -100,7 +119,7 @@ export default function ChatCard() {
     setInputText((prev) => prev + emojiData.emoji);
   };
 
-  // ΟΘΟΝΗ Α: ΕΙΣΟΔΟΣ ΜΕ NICKNAME & AVATAR SELECTION
+  // ΟΘΟΝΗ Α: LOGIN
   if (!isEntered) {
     return (
       <div className={styles.loginWrapper}>
@@ -140,34 +159,42 @@ export default function ChatCard() {
     );
   }
 
-  // ΟΘΟΝΗ Β: ΤΟ ΚΥΡΙΩΣ CHAT (ΚΑΘΑΡΙΣΜΕΝΟ)
+  // ΟΘΟΝΗ Β: ΚΥΡΙΩΣ CHAT
   return (
     <div className={styles.chatSplitWrapper}>
       
-      {/* ΑΡΙΣΤΕΡΗ ΠΛΕΥΡΑ: ONLINE USERS (ΜΟΝΟ Ο LIVE ΧΡΗΣΤΗΣ) */}
+      {/* ΑΡΙΣΤΕΡΗ ΠΛΕΥΡΑ: LIVE USERS */}
       <div className={styles.sidebarUsers}>
         <div className={styles.sidebarHeader}>
           <span className={styles.onlineDot} /> LIVE NOW
         </div>
         <div className={styles.usersList}>
-          {/* Εσύ */}
+          {/* Εσύ πάντα πρώτος */}
           <div className={styles.userRowActive}>
             <span className={styles.userAvatarEmoji}>{userAvatar}</span>
             <span className={styles.userNameText}>{nickname} (YOU)</span>
           </div>
           
-          {/* ΚΑΘΑΡΙΣΜΟΣ: Οι hardcoded χρήστες αφαιρέθηκαν από εδώ */}
+          {/* Οι υπόλοιποι live χρήστες που συνδέονται */}
+          {activeUsers.map((user, idx) => {
+            if (user.nickname === nickname) return null; // Μην δείχνεις διπλό τον εαυτό σου
+            return (
+              <div key={idx} className={styles.userRow}>
+                <span className={styles.userAvatarEmoji}>{user.avatar}</span>
+                <span className={styles.userNameText}>{user.nickname}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* ΔΕΞΙΑ ΠΛΕΥΡΑ: ΤΟ BOX ΜΕ ΤΑ ΜΗΝΥΜΑΤΑ */}
+      {/* ΔΕΞΙΑ ΠΛΕΥΡΑ: MESSAGES BOX */}
       <div className={styles.mainChatBox}>
         <div className={styles.chatHeader}>
           <span className={styles.categoryTag}>🟢 ONLINE CHAT</span>
           <span className={styles.userBadge}>as: {nickname}</span>
         </div>
 
-        {/* ΠΕΡΙΟΧΗ ΜΗΝΥΜΑΤΩΝ */}
         <div className={styles.messageContainer} ref={messageContainerRef}>
           {messages.length === 0 ? (
             <div style={{ padding: '20px', textAlign: 'center', opacity: 0.5, fontSize: '14px' }}>
@@ -189,7 +216,6 @@ export default function ChatCard() {
           )}
         </div>
 
-        {/* INPUT AREA + REAL EMOJI PICKER */}
         <form onSubmit={handleSendMessage} className={styles.inputArea}>
           <div className={styles.inputFlexContainer}>
             <button 
