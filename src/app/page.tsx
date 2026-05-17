@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { Metadata } from 'next';
 import Hero from '@/components/Hero/Hero';
 import HomeBlogSection from '@/components/HomeBlogSection/HomeBlogSection';
