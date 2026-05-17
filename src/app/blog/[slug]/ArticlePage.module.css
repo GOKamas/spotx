@@ -1,0 +1,153 @@
+.articleWrapper {
+  width: 100%;
+  min-height: 100vh;
+  background: #f9cd01; /* Το κλασικό κίτρινο φόντο του site */
+  padding: 140px 20px 80px 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px; /* Ιδανικό πλάτος για να διαβάζεται άνετα το κείμενο flat */
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
+}
+
+.backToBlog {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-decoration: none;
+  margin-bottom: 25px;
+  border-bottom: 2px solid transparent;
+  transition: border 0.2s ease;
+}
+
+.backToBlog:hover {
+  border-color: #000000;
+}
+
+.header { 
+  margin-bottom: 35px; 
+}
+
+/* Η ημερομηνία αφαιρέθηκε τελείως */
+
+.title { 
+  font-size: 42px; /* Λίγο πιο μεγάλο και bold αφού είναι flat */
+  font-weight: 900; 
+  color: #000000; 
+  margin-top: 0; 
+  line-height: 1.15; 
+  letter-spacing: -1px;
+}
+
+/* Η FEATURED IMAGE ΧΩΡΙΣ BORDER */
+.featuredImageWrapper {
+  width: 100%;
+  border: none; /* Αφαιρέθηκε τελείως το border */
+  border-radius: 16px; /* Κρατάμε μια ελαφριά γωνία για στυλ, αν θες τελείως flat βάζεις 0 */
+  overflow: hidden;
+  margin-bottom: 45px;
+}
+
+.featuredImage { 
+  width: 100%; 
+  height: auto; 
+  object-fit: cover; 
+}
+
+/* RICH TEXT STYLE (Πάνω στο κίτρινο φόντο) */
+.bodyContent {
+  font-size: 18px; /* Ελαφρώς μεγαλύτερο font για τέλεια αντίθεση με το μαύρο πάνω στο κίτρινο */
+  line-height: 1.8;
+  color: #000000;
+}
+
+.bodyContent p { 
+  margin-bottom: 26px; 
+}
+
+.bodyContent h2 { 
+  font-size: 28px; 
+  font-weight: 900; 
+  margin: 45px 0 20px 0; 
+  color: #000000; 
+}
+
+.bodyContent h3 { 
+  font-size: 22px; 
+  font-weight: 900; 
+  margin: 35px 0 15px 0; 
+  color: #000000; 
+}
+
+/* Εικόνες μέσα στο κείμενο (επίσης χωρίς border) */
+.inlineImageWrapper {
+  width: 100%;
+  margin: 35px 0;
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.inlineImage { 
+  width: 100%; 
+  height: auto; 
+}
+
+/* SOCIAL MEDIA EMBEDS (Κρατάνε το border για να ξεχωρίζουν τα iFrames) */
+.embedContainer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  margin: 35px 0;
+  border: 3px solid black;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.embedContainer iframe {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+}
+
+.embedContainerTikTok {
+  width: 100%;
+  max-width: 325px;
+  height: 580px;
+  margin: 35px auto;
+  border: 3px solid black;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.embedContainerTikTok iframe { width: 100%; height: 100%; border: 0; }
+
+.embedContainerInstagram {
+  width: 100%;
+  max-width: 500px;
+  height: 600px;
+  margin: 35px auto;
+  border: 3px solid black;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.embedContainerInstagram iframe { width: 100%; height: 100%; border: 0; }
+
+.fallbackLink {
+  display: block; 
+  color: #000000; 
+  font-weight: 900; 
+  margin: 20px 0; 
+  text-decoration: underline;
+}
+
+.loading, .notFound {
+  padding: 180px; 
+  text-align: center; 
+  font-family: sans-serif; 
+  font-weight: 700; 
+  background: #f9cd01; 
+  color: #000000;
+  min-height: 100vh;
+}

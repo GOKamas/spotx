@@ -1,0 +1,118 @@
+.headerWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background: #1a1a1a; 
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+}
+
+.headerContainer {
+  position: relative;
+  width: 100%;
+  max-width: 1440px;
+  padding: 10px 60px 6px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoWrapper {
+  pointer-events: auto;
+  flex-shrink: 0;
+}
+
+.megaLogo {
+  width: 170px;
+  height: auto;
+}
+
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Λίγο μικρότερο gap για να χωράει το κουμπί */
+  pointer-events: auto;
+}
+
+/* --- COFFEE BUTTON --- */
+.coffeeBtn {
+  background: #a00101; /* Έντονο κόκκινο */
+  color: white !important;
+  text-decoration: none;
+  font-weight: 900;
+  font-size: 11px;
+  padding: 8px 18px;
+  border-radius: 10px; /* Rounded pill shape */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.coffeeBtn:hover {
+  background: #e03a3a;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 74, 74, 0.4);
+}
+
+/* --- TODAY WIDGET --- */
+.infoWrapper { position: relative; }
+.infoBtn {
+  background: #f9cd01;
+  color: #1a1a1a;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-weight: 900;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.infoDrawer {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 240px;
+  background: #1a1a1a;
+  color: white;
+  border-radius: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+}
+
+.infoWrapper:hover .infoDrawer {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.drawerItem { margin-bottom: 15px; display: flex; flex-direction: column; gap: 4px; }
+.label { font-size: 10px; text-transform: uppercase; color: #f9cd01; font-weight: 700; }
+.value { font-weight: 600; font-size: 14px; color: #ffffff; }
+.timeLarge { font-size: 1.6rem; color: #ffffff; font-family: monospace; font-weight: 900; }
+
+/* --- RESPONSIVE --- */
+@media (max-width: 1100px) {
+  .headerContainer { padding: 8px 20px; }
+  .megaLogo { width: 130px; }
+  
+  /* Στο mobile κάνουμε το κουμπί λίγο πιο μικρό */
+  .coffeeBtn {
+    font-size: 9px;
+    padding: 6px 12px;
+  }
+  
+  .rightSection { gap: 10px; }
+}

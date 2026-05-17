@@ -1,26 +1,24 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #f9cd01;
+  --foreground: #1a1a1a;
+  --spotx-red: #b00808;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Το animation για το μωβ φωτάκι που λέγαμε */
+@keyframes flicker {
+  0%, 100% { opacity: 0.4; shadow: 0 0 10px #a855f7; }
+  50% { opacity: 1; shadow: 0 0 25px #d946ef; }
+}
+
+.flicker-purple {
+  animation: flicker 1.5s infinite ease-in-out;
 }

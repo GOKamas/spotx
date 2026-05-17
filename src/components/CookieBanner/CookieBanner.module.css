@@ -1,0 +1,119 @@
+.bannerWrapper {
+  position: fixed;
+  bottom: 0px; /* Το screenshot φαίνεται "καρφωμένο" στον πάτο, αλλιώς βάλε π.χ. 20px */
+  left: 0px;
+  right: 0px;
+  background-color: #0d0d0d; /* Το πολύ βαθύ μαύρο/γκρι */
+  color: #8c8c8c; /* Το αχνό γκρι κειμένου */
+  border-top: 1px solid #1a1a1a; /* Ένα πολύ λεπτό, διακριτικό top-border */
+  padding: 25px 40px; /* Μεγάλο, άνετο padding */
+  z-index: 9999;
+  
+  /* Στρογγυλεμένες γωνίες για ολόκληρο το banner (αν δεν είναι full width) */
+  /* Στο screenshot φαίνεται full-width, αλλά αν το θες σε κουτάκι βάλε: */
+  /* border-radius: 30px; margin: 0 20px 20px 20px; max-width: 1000px; */
+}
+
+/* Αν το θες "κουτάκι" όπως το modal, βάλε το παρακάτω border-radius: */
+@media (min-width: 768px) {
+  .bannerWrapper {
+    border-radius: 30px 30px 0 0; /* Στρογγυλεμένες πάνω γωνίες */
+  }
+}
+
+.bannerContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1400px; /* max-width για το περιεχόμενο */
+  margin: 0 auto;
+}
+
+@media (min-width: 992px) {
+  .bannerContainer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+  }
+}
+
+.textSide {
+  flex: 1;
+}
+
+.subTitle {
+  font-size: 11px;
+  font-weight: 700;
+  color: #595959; /* Το ακόμα πιο αχνό γκρι */
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--font-inter); /* Χρησιμοποιούμε Inter για τα "ψιλά" γράμματα */
+}
+
+.mainText {
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 400;
+  margin: 0;
+  font-family: var(--font-inter);
+}
+
+.inlineLink, .inlineModalLink {
+  color: #ffffff; /* Το λευκό link όπως στη φωτογραφία */
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.inlineLink:hover, .inlineModalLink:hover {
+  color: #ffde00; /* Το "κίτρινο" του SpotX για hover state */
+}
+
+.buttonSide {
+  display: flex;
+  gap: 15px;
+}
+
+@media (max-width: 991px) {
+  .buttonSide {
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
+}
+
+.acceptBtn, .declineBtn {
+  padding: 15px 35px; /* Μεγάλο padding για "pill" σχήμα */
+  font-size: 12px;
+  font-weight: 900; /* Πολύ έντονο font-weight */
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 100px; /* Το "pill" σχήμα */
+  letter-spacing: 0.5px;
+  font-family: var(--font-montserrat); /* Montserrat για τα έντονα γράμματα */
+  transition: all 0.2s ease;
+}
+
+.acceptBtn {
+  background-color: #ffffff; /* Λευκό φόντο */
+  color: #000000; /* Μαύρα γράμματα */
+  border: none;
+}
+
+.acceptBtn:hover {
+  background-color: #ffde00; /* Το "κίτρινο" του SpotX */
+}
+
+.declineBtn {
+  background-color: transparent;
+  color: #ffffff; /* Λευκά γράμματα */
+  border: 1.5px solid #333333; /* Λεπτό border */
+}
+
+.declineBtn:hover {
+  background-color: #ff4444; /* Το "κόκκινο" του Declined */
+  color: #ffffff;
+  border-color: #ff4444;
+}

@@ -1,0 +1,126 @@
+.footerWrapper {
+  width: 100%;
+  background-color: #000000;
+  border-top: 1px solid #1a1a1a;
+  padding: 50px 40px;
+  margin-top: auto;
+}
+
+.footerContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+@media (min-width: 768px) {
+  .footerContainer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+.brandSection, .legalSection, .contactSection {
+  flex: 1;
+}
+
+.footerLogo {
+  height: auto;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.tagline {
+  font-size: 11px;
+  color: #ffffff;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  letter-spacing: 0.5px;
+  font-family: var(--font-montserrat);
+}
+
+.location {
+  font-size: 11px;
+  color: #8c8c8c;
+  font-weight: 400;
+  margin: 0 0 15px 0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: var(--font-inter);
+}
+
+.copyright {
+  font-size: 10px;
+  color: #595959;
+  font-family: monospace;
+  margin: 0;
+}
+
+.sectionTitle {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #595959;
+  margin: 0 0 20px 0;
+  text-transform: uppercase;
+  font-family: var(--font-inter);
+}
+
+.legalLinks, .socialGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px; /* Ελαφρώς μεγαλύτερο gap για να αναπνέουν τα εικονίδια */
+}
+
+.modalTrigger {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-family: monospace;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  width: fit-content;
+  transition: color 0.2s ease;
+}
+
+/* ΕΥΘΥΓΡΑΜΜΙΣΗ ΕΙΚΟΝΙΔΙΩΝ ΜΕ ΚΕΙΜΕΝΟ */
+.emailLink, .socialLink {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Απόσταση εικονιδίου από το κείμενο */
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  width: fit-content;
+}
+
+.emailLink {
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font-inter);
+  margin-bottom: 20px;
+}
+
+.socialLink {
+  font-size: 13px;
+  font-weight: bold;
+  font-family: monospace;
+}
+
+/* ΤΟ ΜΕΓΕΘΟΣ ΤΩΝ ΕΙΚΟΝΙΔΙΩΝ */
+.icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* HOVER STATES */
+.modalTrigger:hover, .socialLink:hover, .emailLink:hover {
+  color: #ffde00;
+  text-decoration: underline;
+}

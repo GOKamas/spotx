@@ -1,0 +1,298 @@
+.heroSection {
+  width: 100%;
+  min-height: 100vh;
+  background: #f9cd01;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 150px 250px 30px 40px;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.heroContainer {
+  display: flex;
+  width: 100%;
+  max-width: 1400px;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+}
+
+.leftColumn { 
+  flex: 1;
+  max-width: 700px;
+  display: flex; 
+  justify-content: center; 
+}
+
+.tabContainer { 
+  width: 100%; 
+  display: flex; 
+  flex-direction: column; 
+}
+
+.rightColumn { 
+  display: flex; 
+  justify-content: center; 
+  position: relative; 
+}
+
+.ipodWrapper { 
+  width: 100%; 
+  position: relative; 
+}
+
+.ipodImage { 
+  width: 100%; 
+  height: auto; 
+  display: block; 
+}
+
+/* TABS CONTAINER */
+.tabButtons { 
+  display: flex; 
+  align-items: flex-end; 
+  justify-content: center;
+  gap: 25px; 
+  margin-bottom: 30px; 
+  width: 100%;
+}
+
+.wtfBtn, .quizBtn, .chatBtn { 
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  filter: grayscale(100%) opacity(0.6); 
+  transition: transform 0.3s ease, filter 0.3s ease; 
+  padding: 15;
+}
+
+.wtfBtn:hover, .quizBtn:hover, .chatBtn:hover { 
+  filter: grayscale(50%) opacity(0.8); 
+}
+
+.active { 
+  filter: grayscale(0%) opacity(1) !important; 
+  transform: scale(1.05); 
+}
+
+/* ΕΦΑΡΜΟΓΗ ROBOTO & ΚΑΘΑΡΟ ΚΕΙΜΕΝΟ */
+.displayArea { 
+  width: 100%; 
+  min-height: 350px; 
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400 !important;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* METADATA DESKTOP PANEL */
+.metadataSidePanel {
+  position: absolute; 
+  left: 105%; 
+  top: 20%; 
+  width: 220px; 
+  background: white;
+  border: 3px solid black; 
+  border-radius: 20px; 
+  padding: 18px; 
+  box-shadow: 8px 8px 0px rgba(0,0,0,0.1);
+  z-index: 60;
+  font-family: 'Roboto', sans-serif;
+}
+
+.metaHeader { 
+  font-size: 11px; 
+  font-weight: 500; 
+  color: #a855f7; 
+  border-bottom: 1px solid #eee; 
+  margin-bottom: 12px; 
+  padding-bottom: 6px; 
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.metaLabel { 
+  font-size: 10px; 
+  font-weight: 400; 
+  color: #999; 
+  margin: 0; 
+}
+
+.metaValue { 
+  font-size: 15px; 
+  font-weight: 400 !important; 
+  color: #111;
+  margin-bottom: 12px; 
+}
+
+.metaFooter { 
+  display: flex; 
+  justify-content: space-between; 
+  font-size: 10px; 
+  font-weight: 400; 
+  color: #777;
+  margin-top: 10px; 
+}
+
+/* MOBILE MARQUEE */
+.mobileMarqueeContainer {
+  display: none; 
+  position: fixed; 
+  bottom: 0; 
+  left: 0; 
+  width: 100%; 
+  background: black; 
+  color: white; 
+  padding: 12px; 
+  overflow: hidden; 
+  z-index: 100;
+  font-family: 'Roboto', sans-serif;
+}
+
+.marqueeText { 
+  display: inline-block; 
+  white-space: nowrap; 
+  animation: marquee 15s linear infinite; 
+  font-weight: 400; 
+  font-size: 13px; 
+  text-transform: uppercase;
+}
+
+@keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+/* --- IPOD WHEEL & PULSE EFFECT --- */
+.wheelBtn { position: absolute; background: transparent; border: none; cursor: pointer; z-index: 30; }
+.btnMenu { top: 52%; left: 39%; width: 11%; height: 5%; }
+.btnPlay { top: 76%; left: 40%; width: 11%; height: 5%; }
+.btnNext { top: 62%; left: 57%; width: 8%; height: 8%; }
+.btnPrev { top: 62%; left: 27%; width: 8%; height: 8%; }
+.btnCenter { top: 59%; left: 37.5%; width: 16.5%; aspect-ratio: 1/1; border-radius: 50%; }
+
+.purpleRing {
+  position: absolute;
+  top: 59.4%;
+  left: 38.1%;
+  width: 13.5%;
+  aspect-ratio: 1/1;
+  border: 4px solid #a855f7;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 25;
+  transition: opacity 0.3s ease;
+}
+
+.pulse {
+  opacity: 1;
+  animation: pulseAnimation 1.5s infinite ease-in-out;
+}
+
+@keyframes pulseAnimation {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0px 0px rgba(168, 85, 247, 0.7);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px 5px rgba(168, 85, 247, 0.3);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0px 0px rgba(168, 85, 247, 0);
+  }
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 1100px) {
+  .heroSection {
+    padding: 80px 20px 80px 20px;
+  }
+  .heroContainer { 
+    flex-direction: column-reverse; 
+    gap: 50px; 
+  }
+  .mobileMarqueeContainer { display: block; }
+  .metadataSidePanel { display: none; }
+  .leftColumn { width: 100%; max-width: 100%; }
+  
+  .rightColumn { 
+    width: 100% !important; 
+    min-width: 100% !important; 
+    max-width: 340px !important; 
+    flex: 0 1 340px !important; 
+  }
+}
+/* --- AUDIO VISUALIZER STYLING --- */
+.visualizerContainer {
+  width: 100%;
+  height: 100%;
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.visualizerWrapper {
+  display: flex;
+  align-items: flex-end; /* Οι μπάρες ξεκινούν να μεγαλώνουν από κάτω προς τα πάνω */
+  justify-content: center;
+  gap: 10px; /* Απόσταση ανάμεσα στις μπάρες */
+  height: 140px; /* Μέγιστο ύψος του visualizer */
+  width: 100%;
+  max-width: 450px;
+  margin-bottom: 25px;
+}
+
+.bar {
+  width: 14px; /* Χοντρές, bold μπάρες στυλ brutalist */
+  background: #000000; /* Καθαρό μαύρο για να κάνει αντίθεση με το κίτρινο */
+  border-radius: 4px;
+  transition: height 0.3s ease;
+}
+
+/* Όταν παίζει μουσική (Active Animation) */
+.barPlaying {
+  animation: bounceVisualizer 0.8s ease-in-out infinite alternate;
+}
+
+/* Όταν είναι σε παύση (Static state με τυχαία μικρά ύψη) */
+.barPaused {
+  height: 15px !important; /* Κάθονται flat χαμηλά */
+  opacity: 0.4;
+}
+
+.visualizerStatus {
+  font-family: 'Roboto', sans-serif;
+  font-size: 11px;
+  font-weight: 900;
+  color: #000000;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* KEYFRAMES ΓΙΑ ΤΗΝ ΚΙΝΗΣΗ ΤΩΝ ΜΠΑΡΩΝ */
+@keyframes bounceVisualizer {
+  0% {
+    height: 15px;
+  }
+  100% {
+    height: 130px; /* Φτάνει σχεδόν μέχρι την κορυφή του wrapper */
+  }
+}
+
+/* Ρυθμίζουμε μερικές μπάρες να πηγαίνουν πιο ψηλά από άλλες για φυσικό look */
+.visualizerWrapper .bar:nth-child(even) {
+  animation-duration: 0.6s;
+}
+.visualizerWrapper .bar:nth-child(3n) {
+  animation-duration: 0.9s;
+}
+.visualizerWrapper .bar:nth-child(5n) {
+  animation-duration: 0.7s;
+}
