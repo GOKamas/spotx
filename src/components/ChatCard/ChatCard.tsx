@@ -18,13 +18,10 @@ export default function ChatCard() {
   const [inputText, setInputText] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   
-  // Αρχικά hardcoded μηνύματα (που αντικαθίστανται/εμπλουτίζονται live)
-  const [messages, setMessages] = useState<Message[]>([
-    { nickname: "DJ_X", text: "Παιδιά το νέο κουίζ για τα 90s είναι φωτιά! 🔥", time: "19:40", avatar: "🎤" },
-    { nickname: "Guest302", text: "Έχει κανείς ιδέα ποιο κομμάτι παίζει στο iPod τώρα;", time: "19:42", avatar: "🛹" }
-  ]);
+  // ΚΑΘΑΡΙΣΜΟΣ: Το chat ξεκινάει πλέον άδειο χωρίς ghost μηνύματα
+  const [messages, setMessages] = useState<Message[]>([]);
 
-  // Το ref στοχεύει πλέον το scrollable container των μηνυμάτων
+  // Το ref στοχεύει το scrollable container των μηνυμάτων
   const messageContainerRef = useRef<HTMLDivElement>(null);
 
   // 1. Σύνδεση στο Pusher ΜΟΛΙΣ μπει ο χρήστης στο chat
@@ -39,7 +36,6 @@ export default function ChatCard() {
     channel.bind('new-message', (data: Message) => {
       // Αποφεύγουμε τα διπλά μηνύματα για τον ίδιο τον αποστολέα αν έρθει από το broadcast
       setMessages((prev) => {
-        // Αν το τελευταίο μήνυμα είναι ολόϊδιο από τον ίδιο χρήστη, μην το ξαναβάζεις
         if (prev.length > 0 && prev[prev.length - 1].text === data.text && prev[prev.length - 1].nickname === data.nickname) {
           return prev;
         }
@@ -54,7 +50,7 @@ export default function ChatCard() {
     };
   }, [isEntered]);
 
-  // ΔΙΟΡΘΩΣΗ: Αυτόματο scroll ΜΟΝΟ μέσα στο container, χωρίς να κουνιέται η σελίδα
+  // Αυτόματο scroll ΜΟΝΟ μέσα στο container
   useEffect(() => {
     if (messageContainerRef.current) {
       messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
@@ -144,11 +140,11 @@ export default function ChatCard() {
     );
   }
 
-  // ΟΘΟΝΗ Β: ΤΟ ΚΥΡΙΩΣ CHAT (SPLIT LAYOUT)
+  // ΟΘΟΝΗ Β: ΤΟ ΚΥΡΙΩΣ CHAT (ΚΑΘΑΡΙΣΜΕΝΟ)
   return (
     <div className={styles.chatSplitWrapper}>
       
-      {/* ΑΡΙΣΤΕΡΗ ΠΛΕΥΡΑ: ONLINE USERS */}
+      {/* ΑΡΙΣΤΕΡΗ ΠΛΕΥΡΑ: ONLINE USERS (ΜΟΝΟ Ο LIVE ΧΡΗΣΤΗΣ) */}
       <div className={styles.sidebarUsers}>
         <div className={styles.sidebarHeader}>
           <span className={styles.onlineDot} /> LIVE NOW
@@ -159,11 +155,8 @@ export default function ChatCard() {
             <span className={styles.userAvatarEmoji}>{userAvatar}</span>
             <span className={styles.userNameText}>{nickname} (YOU)</span>
           </div>
-          {/* Λοιποί συνδεδεμένοι (Mocked Crowd) */}
-          <div className={styles.userRow}><span className={styles.userAvatarEmoji}>🎤</span><span className={styles.userNameText}>DJ_X</span></div>
-          <div className={styles.userRow}><span className={styles.userAvatarEmoji}>🛹</span><span className={styles.userNameText}>Guest302</span></div>
-          <div className={styles.userRow}><span className={styles.userAvatarEmoji}>🔥</span><span className={styles.userNameText}>Spit_Fire</span></div>
-          <div className={styles.userRow}><span className={styles.userAvatarEmoji}>⚡</span><span className={styles.userNameText}>Volt_X</span></div>
+          
+          {/* ΚΑΘΑΡΙΣΜΟΣ: Οι hardcoded χρήστες αφαιρέθηκαν από εδώ */}
         </div>
       </div>
 
@@ -174,20 +167,26 @@ export default function ChatCard() {
           <span className={styles.userBadge}>as: {nickname}</span>
         </div>
 
-        {/* ΠΕΡΙΟΧΗ ΜΗΝΥΜΑΤΩΝ (Μπήκε το ref εδώ) */}
+        {/* ΠΕΡΙΟΧΗ ΜΗΝΥΜΑΤΩΝ */}
         <div className={styles.messageContainer} ref={messageContainerRef}>
-          {messages.map((msg, i) => (
-            <div key={i} className={`${styles.messageRow} ${msg.nickname === nickname ? styles.myMessage : ''}`}>
-              <span className={styles.msgAvatarIcon}>{msg.avatar || '🎧'}</span>
-              <div className={styles.msgMainBody}>
-                <span className={styles.msgNick}>{msg.nickname}</span>
-                <div className={styles.msgBubble}>
-                  <p className={styles.msgText}>{msg.text}</p>
-                  <span className={styles.msgTime}>{msg.time}</span>
+          {messages.length === 0 ? (
+            <div style={{ padding: '20px', textAlign: 'center', opacity: 0.5, fontSize: '14px' }}>
+              No messages yet. Say hi! 👋
+            </div>
+          ) : (
+            messages.map((msg, i) => (
+              <div key={i} className={`${styles.messageRow} ${msg.nickname === nickname ? styles.myMessage : ''}`}>
+                <span className={styles.msgAvatarIcon}>{msg.avatar || '🎧'}</span>
+                <div className={styles.msgMainBody}>
+                  <span className={styles.msgNick}>{msg.nickname}</span>
+                  <div className={styles.msgBubble}>
+                    <p className={styles.msgText}>{msg.text}</p>
+                    <span className={styles.msgTime}>{msg.time}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
         {/* INPUT AREA + REAL EMOJI PICKER */}
