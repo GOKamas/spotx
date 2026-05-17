@@ -53,7 +53,10 @@ export default function QuizCard() {
       setScore(nextScore);
     }
 
-    if (currentQuestion + 1 < selectedQuiz.questions.length) {
+    // Ασφαλής έλεγχος για το μήκος των ερωτήσεων
+    const totalQuestions = selectedQuiz?.questions?.length || 0;
+
+    if (currentQuestion + 1 < totalQuestions) {
       setCurrentQuestion(prev => prev + 1);
     } else {
       setQuizFinished(true);
@@ -68,7 +71,7 @@ export default function QuizCard() {
           <span className={styles.categoryTag}>CHOOSE YOUR CHALLENGE</span>
           
           <div className={styles.quizListContainer}>
-            {quizzes.map((quiz, i) => (
+            {quizzes?.map((quiz, i) => (
               <button 
                 key={i} 
                 className={styles.quizRow} 
@@ -78,7 +81,7 @@ export default function QuizCard() {
                   {quiz.featuredImage ? (
                     <Image
                       src={urlFor(quiz.featuredImage).width(100).height(100).url()}
-                      alt={quiz.title}
+                      alt={quiz.title || 'Quiz Thumbnail'}
                       width={45}
                       height={45}
                       className={styles.thumbnail}
@@ -87,7 +90,7 @@ export default function QuizCard() {
                     <div className={styles.fallbackIcon}>❓</div>
                   )}
                 </div>
-                <span className={styles.quizTitle}>{quiz.title}</span>
+                <span className={styles.quizTitle}>{quiz.title || 'Untitled Quiz'}</span>
                 <span className={styles.quizArrow}>→</span>
               </button>
             ))}
@@ -104,13 +107,15 @@ export default function QuizCard() {
       (res: any) => score >= res.minScore && score <= res.maxScore
     ) || { title: "Quiz Completed!", text: "Ελπίζουμε να διασκέδασες!" };
 
+    const totalQuestions = selectedQuiz?.questions?.length || 0;
+
     return (
       <div className={styles.mainBox}>
         <div className={styles.contentArea} style={{ textAlign: 'center' }}>
           <span className={styles.categoryTag}>RESULTS</span>
           
           <h2 className={styles.scoreTitle}>
-            YOUR SCORE: {score} / {selectedQuiz.questions.length}
+            YOUR SCORE: {score} / {totalQuestions}
           </h2>
           
           <h3 className={styles.feedbackTitle}>{feedback.title}</h3>
@@ -125,14 +130,27 @@ export default function QuizCard() {
   }
 
   // 3. Προβολή Παιχνιδιού: Ερωτήσεις (με υποστήριξη Φωτογραφίας)
-  const question = selectedQuiz.questions[currentQuestion];
+  const totalQuestions = selectedQuiz?.questions?.length || 0;
+  const question = selectedQuiz?.questions?.[currentQuestion];
+
+  // Αν για κάποιο λόγο η ερώτηση δεν υπάρχει καθόλου στο index
+  if (!question) {
+    return (
+      <div className={styles.mainBox}>
+        <div className={styles.contentArea}>
+          <p className={styles.questionText}>Σφάλμα: Η ερώτηση δεν βρέθηκε.</p>
+          <button className={styles.backBtn} onClick={handleExit}>ΕΠΙΣΤΡΟΦΗ</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.mainBox}>
       <div className={styles.contentArea}>
         <div className={styles.gameHeader}>
           <span className={styles.categoryTag}>
-            QUESTION {currentQuestion + 1} OF {selectedQuiz.questions.length}
+            QUESTION {currentQuestion + 1} OF {totalQuestions}
           </span>
           <button className={styles.backBtn} onClick={handleExit}>EXIT</button>
         </div>
@@ -150,10 +168,11 @@ export default function QuizCard() {
           </div>
         )}
         
-        <p className={styles.questionText}>{question.questionText}</p>
+        <p className={styles.questionText}>{question.questionText || 'Χωρίς κείμενο ερώτησης'}</p>
         
         <div className={styles.answersGrid}>
-          {question.answers.map((ans: any, i: number) => (
+          {/* Θωρακισμένο loop με optional chaining προστασία */}
+          {question?.answers?.map((ans: any, i: number) => (
             <button 
               key={i} 
               className={styles.answerBtn} 
@@ -162,6 +181,13 @@ export default function QuizCard() {
               {ans.text}
             </button>
           ))}
+
+          {/* Μήνυμα ασφαλείας αν οι απαντήσεις είναι null ή άδειες στο Sanity */}
+          {(!question?.answers || question.answers.length === 0) && (
+            <p style={{ opacity: 0.6, fontStyle: 'italic', gridColumn: '1 / -1', textAlign: 'center', marginTop: '10px' }}>
+              Δεν έχουν προστεθεί επιλογές απαντήσεων για αυτή την ερώτηση στο Sanity Studio.
+            </p>
+          )}
         </div>
       </div>
     </div>
