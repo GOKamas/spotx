@@ -1,5 +1,6 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image'; // ⚡ Εισαγωγή του optimized Image component
 import FunFactCard from '../FunFactCard/FunFactCard';
 import QuizCard from '../QuizCard/QuizCard';
 import ChatCard from '../ChatCard/ChatCard';
@@ -9,7 +10,7 @@ interface SongData {
   title: string;
   artist: string;
   album: string;
-  art: string; // 🖼️ Προσθήκη για το URL της εικόνας
+  art: string; 
 }
 
 export default function Hero() {
@@ -22,7 +23,7 @@ export default function Hero() {
     title: "Φορτώνει...",
     artist: "SpotX Radio",
     album: "Live",
-    art: "/hero1.webp" // Default εικόνα μέχρι να φορτώσει
+    art: "/hero1.webp" 
   });
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -39,7 +40,6 @@ export default function Hero() {
           title: data.now_playing.song.title || "Unknown Title",
           artist: data.now_playing.song.artist || "Unknown Artist",
           album: data.now_playing.song.album || "Live Stream",
-          // Αν το AzuraCast έχει εικόνα τη βάζει, αλλιώς κρατάει μια default (π.χ. το /hero1.webp ή το logo σου)
           art: data.now_playing.song.art || "/hero1.webp" 
         });
       }
@@ -103,7 +103,8 @@ export default function Hero() {
                 className={`${styles.wtfBtn} ${activeTab === 'fact' ? styles.active : ''}`}
                 onClick={() => setActiveTab(activeTab === 'fact' ? null : 'fact')}
               >
-                <img src="/wtf1.webp" alt="Facts" style={{ width: '100%', height: 'auto' }} />
+                {/* ⚡ Βελτιστοποιημένη εικόνα */}
+                <Image src="/wtf1.webp" alt="Facts" width={150} height={150} style={{ width: '100%', height: 'auto' }} />
               </button>
 
               <button 
@@ -111,7 +112,8 @@ export default function Hero() {
                 className={`${styles.quizBtn} ${activeTab === 'quiz' ? styles.active : ''}`}
                 onClick={() => setActiveTab(activeTab === 'quiz' ? null : 'quiz')}
               >
-                <img src="/quiz1.webp" alt="Quiz" style={{ width: '100%', height: 'auto' }} />
+                {/* ⚡ Βελτιστοποιημένη εικόνα */}
+                <Image src="/quiz1.webp" alt="Quiz" width={150} height={150} style={{ width: '100%', height: 'auto' }} />
               </button>
 
               <button 
@@ -119,7 +121,8 @@ export default function Hero() {
                 className={`${styles.chatBtn} ${activeTab === 'chat' ? styles.active : ''}`}
                 onClick={() => setActiveTab(activeTab === 'chat' ? null : 'chat')}
               >
-                <img src="/chat1.webp" alt="Chat" style={{ width: '100%', height: 'auto' }} />
+                {/* ⚡ Βελτιστοποιημένη εικόνα */}
+                <Image src="/chat1.webp" alt="Chat" width={140} height={140} style={{ width: '100%', height: 'auto' }} />
               </button>
             </div>
 
@@ -154,7 +157,15 @@ export default function Hero() {
           style={{ width: '500px', minWidth: '500px', maxWidth: '500px', flex: '0 0 500px' }}
         >
           <div className={styles.ipodWrapper}>
-            <img src="/hero1.webp" alt="iPod" className={styles.ipodImage} />
+            {/* ⚡ ΚΡΙΣΙΜΟ FIX ΓΙΑ GTMetrix: Μετατροπή σε Next.js Image με priority attribute */}
+            <Image 
+              src="/hero1.webp" 
+              alt="iPod" 
+              width={500} 
+              height={600} 
+              className={styles.ipodImage} 
+              priority // Αυτό λέει στον browser να κατεβάσει το iPod πρώτο απ' όλα!
+            />
             <div className={`${styles.purpleRing} ${isPlaying ? styles.pulse : ''}`} />
             
             <button className={`${styles.wheelBtn} ${styles.btnMenu}`} onClick={() => setShowMetadata(!showMetadata)} />
@@ -171,10 +182,14 @@ export default function Hero() {
                   
                   {/* 🖼️ Εμφάνιση του Album Art */}
                   <div className={styles.metaAlbumArtWrapper} style={{ marginBottom: '15px', display: 'flex', justifyContent: 'center' }}>
-                    <img 
+                    {/* Χρησιμοποιούμε unoptimized αν το URL έρχεται dynamic από εξωτερικό API (AzuraCast) */}
+                    <Image 
                       src={currentSong.art} 
                       alt="Album Art" 
-                      style={{ width: '120px', height: '120px', borderRadius: '8px', objectFit: 'cover', border: '2px solid #fff' }} 
+                      width={120} 
+                      height={120}
+                      unoptimized={currentSong.art.startsWith('http')} 
+                      style={{ borderRadius: '8px', objectFit: 'cover', border: '2px solid #fff' }} 
                     />
                   </div>
 

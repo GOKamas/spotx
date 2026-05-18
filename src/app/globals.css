@@ -22,3 +22,7 @@ body {
 .flicker-purple {
   animation: flicker 1.5s infinite ease-in-out;
 }
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}

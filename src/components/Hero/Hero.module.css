@@ -5,9 +5,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 150px 250px 30px 40px;
-  overflow-x: hidden;
+  /* ΔΙΟΡΘΩΣΗ: Συμμετρικό padding δεξιά/αριστερά για να μην σπρώχνει το layout */
+  padding: 150px 40px 30px 40px; 
+  /* ΔΙΟΡΘΩΣΗ: overflow: hidden για να κόβει το metadata side panel που βγαίνει έξω */
+  overflow: hidden; 
   box-sizing: border-box;
+  position: relative;
 }
 
 .heroContainer {
@@ -65,7 +68,7 @@
   cursor: pointer; 
   filter: grayscale(100%) opacity(0.6); 
   transition: transform 0.3s ease, filter 0.3s ease; 
-  padding: 15;
+  padding: 15px; /* ΔΙΟΡΘΩΣΗ: Προσθήκη 'px' που έλειπε */
 }
 
 .wtfBtn:hover, .quizBtn:hover, .chatBtn:hover { 
@@ -91,7 +94,7 @@
 /* METADATA DESKTOP PANEL */
 .metadataSidePanel {
   position: absolute; 
-  left: 105%; 
+  left: 105%; /* Αυτό έβγαζε το div εκτός viewport */
   top: 20%; 
   width: 220px; 
   background: white;
@@ -225,6 +228,7 @@
     flex: 0 1 340px !important; 
   }
 }
+
 /* --- AUDIO VISUALIZER STYLING --- */
 .visualizerContainer {
   width: 100%;
@@ -239,18 +243,18 @@
 
 .visualizerWrapper {
   display: flex;
-  align-items: flex-end; /* Οι μπάρες ξεκινούν να μεγαλώνουν από κάτω προς τα πάνω */
+  align-items: flex-end; 
   justify-content: center;
-  gap: 10px; /* Απόσταση ανάμεσα στις μπάρες */
-  height: 140px; /* Μέγιστο ύψος του visualizer */
+  gap: 10px; 
+  height: 140px; 
   width: 100%;
   max-width: 450px;
   margin-bottom: 25px;
 }
 
 .bar {
-  width: 14px; /* Χοντρές, bold μπάρες στυλ brutalist */
-  background: #000000; /* Καθαρό μαύρο για να κάνει αντίθεση με το κίτρινο */
+  width: 14px; 
+  background: #000000; 
   border-radius: 4px;
   transition: height 0.3s ease;
 }
@@ -260,9 +264,9 @@
   animation: bounceVisualizer 0.8s ease-in-out infinite alternate;
 }
 
-/* Όταν είναι σε παύση (Static state με τυχαία μικρά ύψη) */
+/* Όταν είναι σε παύση */
 .barPaused {
-  height: 15px !important; /* Κάθονται flat χαμηλά */
+  height: 15px !important; 
   opacity: 0.4;
 }
 
@@ -282,11 +286,11 @@
     height: 15px;
   }
   100% {
-    height: 130px; /* Φτάνει σχεδόν μέχρι την κορυφή του wrapper */
+    height: 130px; 
   }
 }
 
-/* Ρυθμίζουμε μερικές μπάρες να πηγαίνουν πιο ψηλά από άλλες για φυσικό look */
+/* Ρυθμίσεις για ασύμμετρη, φυσική κίνηση του visualizer */
 .visualizerWrapper .bar:nth-child(even) {
   animation-duration: 0.6s;
 }
