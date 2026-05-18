@@ -1,10 +1,16 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import Image from 'next/image'; // ⚡ Εισαγωγή του optimized Image component
+import Image from 'next/image'; 
+import dynamic from 'next/dynamic'; // ⚡ Εισαγωγή του dynamic για το Lazy Loading
 import FunFactCard from '../FunFactCard/FunFactCard';
 import QuizCard from '../QuizCard/QuizCard';
-import ChatCard from '../ChatCard/ChatCard';
 import styles from './Hero.module.css';
+
+// ⚡ LAZY LOAD: Το ChatCard θα φορτώσει ΜΟΝΟ όταν ο χρήστης πατήσει το κουμπί του Chat
+const ChatCard = dynamic(() => import('../ChatCard/ChatCard'), {
+  ssr: false, // Αποφέυγει προβλήματα με το Pusher κατά το build
+  loading: () => <div style={{ padding: '20px', textAlign: 'center', opacity: 0.5, fontFamily: 'Roboto, sans-serif' }}>Φορτώνει το Chat...</div>
+});
 
 interface SongData {
   title: string;
@@ -103,7 +109,6 @@ export default function Hero() {
                 className={`${styles.wtfBtn} ${activeTab === 'fact' ? styles.active : ''}`}
                 onClick={() => setActiveTab(activeTab === 'fact' ? null : 'fact')}
               >
-                {/* ⚡ Βελτιστοποιημένη εικόνα */}
                 <Image src="/wtf1.webp" alt="Facts" width={150} height={150} style={{ width: '100%', height: 'auto' }} />
               </button>
 
@@ -112,7 +117,6 @@ export default function Hero() {
                 className={`${styles.quizBtn} ${activeTab === 'quiz' ? styles.active : ''}`}
                 onClick={() => setActiveTab(activeTab === 'quiz' ? null : 'quiz')}
               >
-                {/* ⚡ Βελτιστοποιημένη εικόνα */}
                 <Image src="/quiz1.webp" alt="Quiz" width={150} height={150} style={{ width: '100%', height: 'auto' }} />
               </button>
 
@@ -121,7 +125,6 @@ export default function Hero() {
                 className={`${styles.chatBtn} ${activeTab === 'chat' ? styles.active : ''}`}
                 onClick={() => setActiveTab(activeTab === 'chat' ? null : 'chat')}
               >
-                {/* ⚡ Βελτιστοποιημένη εικόνα */}
                 <Image src="/chat1.webp" alt="Chat" width={140} height={140} style={{ width: '100%', height: 'auto' }} />
               </button>
             </div>
@@ -157,14 +160,13 @@ export default function Hero() {
           style={{ width: '500px', minWidth: '500px', maxWidth: '500px', flex: '0 0 500px' }}
         >
           <div className={styles.ipodWrapper}>
-            {/* ⚡ ΚΡΙΣΙΜΟ FIX ΓΙΑ GTMetrix: Μετατροπή σε Next.js Image με priority attribute */}
             <Image 
               src="/hero1.webp" 
               alt="iPod" 
               width={500} 
               height={600} 
               className={styles.ipodImage} 
-              priority // Αυτό λέει στον browser να κατεβάσει το iPod πρώτο απ' όλα!
+              priority // Κατεβαίνει πρώτο για να βελτιώσει το LCP score
             />
             <div className={`${styles.purpleRing} ${isPlaying ? styles.pulse : ''}`} />
             
@@ -180,9 +182,7 @@ export default function Hero() {
                 <div className={styles.metaHeader}>NOW PLAYING</div>
                 <div className={styles.metaContent}>
                   
-                  {/* 🖼️ Εμφάνιση του Album Art */}
                   <div className={styles.metaAlbumArtWrapper} style={{ marginBottom: '15px', display: 'flex', justifyContent: 'center' }}>
-                    {/* Χρησιμοποιούμε unoptimized αν το URL έρχεται dynamic από εξωτερικό API (AzuraCast) */}
                     <Image 
                       src={currentSong.art} 
                       alt="Album Art" 
