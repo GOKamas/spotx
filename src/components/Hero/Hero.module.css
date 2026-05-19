@@ -5,9 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* ΔΙΟΡΘΩΣΗ: Συμμετρικό padding δεξιά/αριστερά για να μην σπρώχνει το layout */
   padding: 150px 40px 30px 40px; 
-  /* ΔΙΟΡΘΩΣΗ: overflow: hidden για να κόβει το metadata side panel που βγαίνει έξω */
   overflow: hidden; 
   box-sizing: border-box;
   position: relative;
@@ -68,7 +66,7 @@
   cursor: pointer; 
   filter: grayscale(100%) opacity(0.6); 
   transition: transform 0.3s ease, filter 0.3s ease; 
-  padding: 15px; /* ΔΙΟΡΘΩΣΗ: Προσθήκη 'px' που έλειπε */
+  padding: 15px; 
 }
 
 .wtfBtn:hover, .quizBtn:hover, .chatBtn:hover { 
@@ -91,53 +89,60 @@
   color: #333;
 }
 
-/* METADATA DESKTOP PANEL */
-.metadataSidePanel {
-  position: absolute; 
-  left: 105%; /* Αυτό έβγαζε το div εκτός viewport */
-  top: 20%; 
-  width: 220px; 
-  background: white;
-  border: 3px solid black; 
-  border-radius: 20px; 
-  padding: 18px; 
-  box-shadow: 8px 8px 0px rgba(0,0,0,0.1);
-  z-index: 60;
+/* ⚡ METADATA PANEL ΠΑΝΩ ΣΤΗΝ ΟΘΟΝΗ ΤΟΥ IPOD */
+.ipodScreenMetadata {
+  position: absolute;
+  top: 8.5%;            /* 💡 Ρύθμισε αυτό το % αν θέλεις να πάει πιο πάνω/κάτω */
+  left: 18.5%;           /* 💡 Ρύθμισε αυτό το % αν θέλεις να πάει πιο αριστερά/δεξιά */
+  width: 55%;            /* Το πλάτος της οθόνης του iPod */
+  height: 34%;           /* Το ύψος της οθόνης του iPod */
+  background-color: #25013f; /* Retro dark background */
+  color: #ffffff;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  z-index: 40;           /* Πάνω από το είδωλο του iPod, κάτω από τα buttons αν χρειαστεί */
   font-family: 'Roboto', sans-serif;
+  text-align: center;
+  box-sizing: border-box;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.9);
 }
 
 .metaHeader { 
-  font-size: 11px; 
-  font-weight: 500; 
+  font-size: 10px; 
+  font-weight: 700; 
   color: #a855f7; 
-  border-bottom: 1px solid #eee; 
-  margin-bottom: 12px; 
-  padding-bottom: 6px; 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+  margin-bottom: 8px; 
+  padding-bottom: 4px; 
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.08em;
+  width: 100%;
+}
+
+.metaContent {
+  width: 100%;
 }
 
 .metaLabel { 
-  font-size: 10px; 
+  font-size: 8px; 
   font-weight: 400; 
-  color: #999; 
-  margin: 0; 
+  color: #888; 
+  margin: 4px 0 1px 0;
+  text-transform: uppercase;
 }
 
 .metaValue { 
-  font-size: 15px; 
-  font-weight: 400 !important; 
-  color: #111;
-  margin-bottom: 12px; 
-}
-
-.metaFooter { 
-  display: flex; 
-  justify-content: space-between; 
-  font-size: 10px; 
-  font-weight: 400; 
-  color: #777;
-  margin-top: 10px; 
+  font-size: 13px; 
+  font-weight: 500; 
+  color: #fff;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Βάζει αποσιωπητικά (...) αν δεν χωράει το όνομα */
 }
 
 /* MOBILE MARQUEE */
@@ -218,7 +223,30 @@
     gap: 50px; 
   }
   .mobileMarqueeContainer { display: block; }
-  .metadataSidePanel { display: none; }
+  
+  /* ⚡ ΔΙΟΡΘΩΣΗ ΓΙΑ MOBILE: Εμφανίζουμε την οθόνη και προσαρμόζουμε το scale */
+  .ipodScreenMetadata { 
+    display: flex; 
+    top: 8.5%; 
+    left: 18.5%;
+    width: 55%;
+    height: 34%;
+    padding: 6px; 
+  } 
+
+  /* Μικραίνουμε ελαφρώς τα fonts και το spacing στο mobile για να μην "σπάνε" */
+  .ipodScreenMetadata .metaHeader {
+    font-size: 8px;
+    margin-bottom: 4px;
+  }
+  .ipodScreenMetadata .metaValue {
+    font-size: 11px;
+  }
+  .ipodScreenMetadata .metaLabel {
+    font-size: 7px;
+    margin-top: 2px;
+  }
+
   .leftColumn { width: 100%; max-width: 100%; }
   
   .rightColumn { 
@@ -259,12 +287,10 @@
   transition: height 0.3s ease;
 }
 
-/* Όταν παίζει μουσική (Active Animation) */
 .barPlaying {
   animation: bounceVisualizer 0.8s ease-in-out infinite alternate;
 }
 
-/* Όταν είναι σε παύση */
 .barPaused {
   height: 15px !important; 
   opacity: 0.4;
@@ -280,23 +306,11 @@
   opacity: 0.7;
 }
 
-/* KEYFRAMES ΓΙΑ ΤΗΝ ΚΙΝΗΣΗ ΤΩΝ ΜΠΑΡΩΝ */
 @keyframes bounceVisualizer {
-  0% {
-    height: 15px;
-  }
-  100% {
-    height: 130px; 
-  }
+  0% { height: 15px; }
+  100% { height: 130px; }
 }
 
-/* Ρυθμίσεις για ασύμμετρη, φυσική κίνηση του visualizer */
-.visualizerWrapper .bar:nth-child(even) {
-  animation-duration: 0.6s;
-}
-.visualizerWrapper .bar:nth-child(3n) {
-  animation-duration: 0.9s;
-}
-.visualizerWrapper .bar:nth-child(5n) {
-  animation-duration: 0.7s;
-}
+.visualizerWrapper .bar:nth-child(even) { animation-duration: 0.6s; }
+.visualizerWrapper .bar:nth-child(3n) { animation-duration: 0.9s; }
+.visualizerWrapper .bar:nth-child(5n) { animation-duration: 0.7s; }

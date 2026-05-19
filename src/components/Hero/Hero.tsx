@@ -166,30 +166,31 @@ export default function Hero() {
               width={500} 
               height={600} 
               className={styles.ipodImage} 
-              priority // Κατεβαίνει πρώτο για να βελτιώσει το LCP score
+              priority 
             />
             <div className={`${styles.purpleRing} ${isPlaying ? styles.pulse : ''}`} />
             
+            {/* Click Wheel Buttons */}
             <button className={`${styles.wheelBtn} ${styles.btnMenu}`} onClick={() => setShowMetadata(!showMetadata)} />
             <button className={`${styles.wheelBtn} ${styles.btnPlay}`} onClick={handlePlayToggle} />
             <button className={`${styles.wheelBtn} ${styles.btnNext}`} onClick={() => handleVolumeChange('up')} />
             <button className={`${styles.wheelBtn} ${styles.btnPrev}`} onClick={() => handleVolumeChange('down')} />
             <button className={`${styles.wheelBtn} ${styles.btnCenter}`} onClick={handlePlayToggle} />
 
-            {/* METADATA PANEL ΜΕ ΦΩΤΟΓΡΑΦΙΑ ΕΞΩΦΥΛΛΟΥ */}
+            {/* ⚡ ΝΕΑ ΘΕΣΗ: ΤΑ METADATA ΕΜΦΑΝΙΖΟΝΤΑΙ ΜΕΣΑ ΣΤΗΝ ΟΘΟΝΗ ΤΟΥ IPOD */}
             {showMetadata && (
-              <div className={styles.metadataSidePanel}>
+              <div className={styles.ipodScreenMetadata}>
                 <div className={styles.metaHeader}>NOW PLAYING</div>
                 <div className={styles.metaContent}>
                   
-                  <div className={styles.metaAlbumArtWrapper} style={{ marginBottom: '15px', display: 'flex', justifyContent: 'center' }}>
+                  <div className={styles.metaAlbumArtWrapper} style={{ marginBottom: '8px', display: 'flex', justifyContent: 'center' }}>
                     <Image 
                       src={currentSong.art} 
                       alt="Album Art" 
-                      width={120} 
-                      height={120}
+                      width={75} 
+                      height={75}
                       unoptimized={currentSong.art.startsWith('http')} 
-                      style={{ borderRadius: '8px', objectFit: 'cover', border: '2px solid #fff' }} 
+                      style={{ borderRadius: '6px', objectFit: 'cover', border: '1px solid #fff' }} 
                     />
                   </div>
 
@@ -197,22 +198,12 @@ export default function Hero() {
                   <p className={styles.metaValue}>{currentSong.title}</p>
                   <p className={styles.metaLabel}>Artist</p>
                   <p className={styles.metaValue}>{currentSong.artist}</p>
-                  <div className={styles.metaFooter}>
-                    <span>{currentSong.album}</span>
-                  </div>
                 </div>
               </div>
             )}
           </div>
 
-          {/* MOBILE MARQUEE */}
-          {showMetadata && (
-            <div className={styles.mobileMarqueeContainer}>
-              <div className={styles.marqueeText}>
-                NOW PLAYING: {currentSong.title} - {currentSong.artist} • {currentSong.album} • 
-              </div>
-            </div>
-          )}
+      
         </div>
 
       </div>

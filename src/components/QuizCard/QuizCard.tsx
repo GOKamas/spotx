@@ -155,15 +155,22 @@ export default function QuizCard() {
           <button className={styles.backBtn} onClick={handleExit}>EXIT</button>
         </div>
         
-        {/* Εικόνα Ερώτησης (Αν υπάρχει στο Sanity) */}
+        {/* Εικόνα Ερώτησης (Με διορθωμένο ratio και contain ορισμό) */}
         {question.questionImage && (
-          <div className={styles.questionImageWrapper}>
+          <div className={styles.questionImageWrapper} style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
             <Image 
-              src={urlFor(question.questionImage).width(600).height(400).url()}
+              src={urlFor(question.questionImage).width(600).url()} 
               alt="Question Visual"
               width={300}
               height={180}
               className={styles.questionImage}
+              style={{ 
+                width: '100%', 
+                maxHeight: '160px', 
+                objectFit: 'contain', 
+                borderRadius: '8px',
+                backgroundColor: '#f7f7f7'
+              }}
             />
           </div>
         )}
