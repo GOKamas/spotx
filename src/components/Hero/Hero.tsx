@@ -34,7 +34,7 @@ export default function Hero() {
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const STREAM_URL = "https://a7.asurahosting.com:8290/radio.mp3";
+  const STREAM_URL = "https://a7.asurahosting.com/listen/spotx/radio.mp3";
   const API_URL = "https://a7.asurahosting.com/api/nowplaying/spotx";
 
   const fetchNowPlaying = async () => {
