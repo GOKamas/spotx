@@ -1,0 +1,130 @@
+.pageWrapper {
+  width: 100%;
+  padding: 140px 20px 80px 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
+}
+
+.header {
+  margin-bottom: 60px;
+}
+
+.title {
+  font-size: 42px;
+  font-weight: 900;
+  color: #000000;
+  margin: 0;
+  line-height: 1.15;
+  letter-spacing: -1px;
+}
+
+.subtitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 10px;
+  opacity: 0.7;
+}
+
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+}
+
+.rowCard {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  overflow: hidden;
+  text-decoration: none;
+  color: black;
+  padding-bottom: 40px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.rowCard:hover {
+  transform: translateX(5px);
+}
+
+.gameImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.iconEmoji {
+  font-size: 64px;
+}
+
+.cardContent {
+  padding: 10px 0 10px 35px;
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cardTitle {
+  font-size: 26px;
+  font-weight: 900;
+  margin: 0 0 10px 0;
+  line-height: 1.2;
+}
+
+.cardMeta {
+  font-size: 14px;
+  color: #1a1a1a;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  opacity: 0.75;
+}
+
+.readMoreBtn {
+  font-size: 12px;
+  font-weight: 900;
+  color: black;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .rowCard {
+    flex-direction: column;
+    padding-bottom: 30px;
+  }
+
+  .iconWrapper {
+    width: 100%;
+    min-width: 100%;
+    aspect-ratio: 16/10;
+    margin-bottom: 15px;
+  }
+
+  .cardContent {
+    width: 100%;
+    padding: 0;
+  }
+
+  .cardTitle {
+    font-size: 22px;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+}

@@ -1,11 +1,11 @@
-'use client';
-import { useState, useEffect, use } from 'react';
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { client } from '@/sanity/lib/client';
 import { createImageUrlBuilder } from '@sanity/image-url';
 import { PortableText } from '@portabletext/react';
-import Header from '@/components/Header/Header'; // Import του Header
+import Header from '@/components/Header/Header';
 import styles from './ArticlePage.module.css';
 
 const builder = createImageUrlBuilder({
@@ -15,6 +15,48 @@ const builder = createImageUrlBuilder({
 function urlFor(source: any) {
   return builder.image(source);
 }
+
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+async function getArticle(slug: string) {
+  const query = `*[_type == "blog" && slug.current == $slug][0] {
+    title,
+    featuredImage,
+    excerpt,
+    content,
+    _createdAt,
+    _updatedAt
+  }`;
+  return client.fetch(query, { slug });
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const article = await getArticle(slug);
+
+  if (!article) return {};
+
+  const imageUrl = article.featuredImage
+    ? urlFor(article.featuredImage).width(1200).height(630).url()
+    : undefined;
+
+  return {
+    title: `${article.title} | SPOTX Blog`,
+    description: article.excerpt || `Διάβασε το άρθρο "${article.title}" στο SpotX.`,
+    openGraph: {
+      title: article.title,
+      description: article.excerpt || undefined,
+      type: 'article',
+      publishedTime: article._createdAt,
+      modifiedTime: article._updatedAt,
+      images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630, alt: article.title }] : undefined,
+    },
+  };
+}
+
+export const revalidate = 60;
 
 const components = {
   types: {
@@ -43,40 +85,24 @@ const components = {
   }
 };
 
-export default function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
-  const resolvedParams = use(params);
-  const [article, setArticle] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+export default async function ArticlePage({ params }: Props) {
+  const { slug } = await params;
+  const article = await getArticle(slug);
 
-  useEffect(() => {
-    const query = `*[_type == "blog" && slug.current == $slug][0] {
-      title,
-      featuredImage,
-      content,
-      _createdAt
-    }`;
-    
-    client.fetch(query, { slug: resolvedParams.slug }).then((data) => {
-      setArticle(data);
-      setLoading(false);
-    });
-  }, [resolvedParams.slug]);
-
-  if (loading) return <div className={styles.loading}>Loading Article...</div>;
-  if (!article) return <div className={styles.notFound}>Article Not Found!</div>;
+  if (!article) {
+    notFound();
+  }
 
   return (
     <main className="min-h-screen bg-white">
-      {/* Το Header μέσα στη σελίδα του άρθρου */}
       <Header />
 
       <article className={styles.articleWrapper}>
         <div className={styles.container}>
           <Link href="/blog" className={styles.backToBlog}>← RETURN TO BLOGX</Link>
-          
+
           <header className={styles.header}>
-           
-                       <h1 className={styles.title}>{article.title}</h1>
+            <h1 className={styles.title}>{article.title}</h1>
           </header>
 
           {article.featuredImage && (

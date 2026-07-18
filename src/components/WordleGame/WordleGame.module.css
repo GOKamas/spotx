@@ -1,0 +1,172 @@
+.gameWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  font-family: 'Roboto', sans-serif;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.loadingText {
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+}
+
+.cell {
+  width: 56px;
+  height: 56px;
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 900;
+  color: #1a1a1a;
+  background: #ffffff;
+  text-transform: uppercase;
+}
+
+.filled {
+  border-color: #1a1a1a;
+}
+
+.correct {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+  color: #f9cd01;
+}
+
+.present {
+  background: #a855f7;
+  border-color: #a855f7;
+  color: #ffffff;
+}
+
+.absent {
+  background: #d1d5db;
+  border-color: #d1d5db;
+  color: #4b5563;
+}
+
+.toast {
+  background: #1a1a1a;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.endScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.endTitle {
+  font-size: 18px;
+  font-weight: 900;
+  color: #1a1a1a;
+}
+
+.playAgainBtn {
+  background: #1a1a1a;
+  color: #f9cd01;
+  border: none;
+  font-weight: 900;
+  font-size: 12px;
+  padding: 10px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: transform 0.2s ease;
+}
+
+.playAgainBtn:hover {
+  transform: scale(1.05);
+}
+
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.keyboardRow {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.key {
+  min-width: 34px;
+  height: 46px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 6px;
+  background: #e5e7eb;
+  color: #1a1a1a;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.key:hover {
+  background: #d1d5db;
+}
+
+.keyWide {
+  min-width: 56px;
+  font-size: 11px;
+}
+
+.correct.key,
+.key.correct {
+  background: #1a1a1a;
+  color: #f9cd01;
+}
+
+.key.present {
+  background: #a855f7;
+  color: #ffffff;
+}
+
+.key.absent {
+  background: #9ca3af;
+  color: #ffffff;
+}
+
+@media (max-width: 480px) {
+  .cell {
+    width: 46px;
+    height: 46px;
+    font-size: 22px;
+  }
+  .key {
+    min-width: 28px;
+    height: 40px;
+    font-size: 12px;
+  }
+  .keyWide {
+    min-width: 44px;
+  }
+}

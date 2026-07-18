@@ -290,7 +290,52 @@ const blog: SchemaTypeDefinition = {
   }
 }
 
+// 4. Wordle Word Schema
+const wordleWord: SchemaTypeDefinition = {
+  name: 'wordleWord',
+  title: 'Wordle - Λέξεις',
+  type: 'document',
+  fields: [
+    {
+      name: 'word',
+      type: 'string',
+      title: 'Λέξη (5 κεφαλαία ελληνικά γράμματα, χωρίς τόνους)',
+      description: 'π.χ. ΣΠΙΤΙ, ΒΟΥΝΟ, ΨΩΜΙ',
+      validation: (Rule) =>
+        Rule.required()
+          .length(5)
+          .regex(/^[Α-Ω]{5}$/, { name: 'greek-caps' })
+          .error('Ακριβώς 5 κεφαλαία ελληνικά γράμματα, χωρίς τόνους'),
+    },
+  ],
+  preview: {
+    select: { title: 'word' }
+  }
+}
+
+// 5. Memory Game Schema (Singleton)
+const memoryGame: SchemaTypeDefinition = {
+  name: 'memoryGame',
+  title: 'Memory Game - Κάρτες',
+  type: 'document',
+  fields: [
+    {
+      name: 'cards',
+      type: 'array',
+      title: 'Οι 8 εικόνες των καρτών',
+      description: 'Πρόσθεσε ακριβώς 8 εικόνες. Κάθε μία θα εμφανίζεται σε ζευγάρι (16 κάρτες συνολικά στο 4x4 grid).',
+      of: [{ type: 'image', options: { hotspot: true } }],
+      validation: (Rule) => Rule.length(8).error('Χρειάζονται ακριβώς 8 εικόνες.'),
+    },
+  ],
+  preview: {
+    prepare() {
+      return { title: 'Memory Game Κάρτες' };
+    },
+  },
+}
+
 // Εξαγωγή όλων των schemas μαζί
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [funFact, quiz, blog],
+  types: [funFact, quiz, blog, wordleWord, memoryGame],
 }

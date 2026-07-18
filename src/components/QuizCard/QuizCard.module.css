@@ -24,6 +24,30 @@
   margin-bottom: 20px;
 }
 
+/* HEADER ROW (νέο - τίτλος + link "όλα τα quiz") */
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.headerRow .categoryTag {
+  margin-bottom: 0;
+}
+
+.seeAllLink {
+  font-size: 11px;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.seeAllLink:hover {
+  color: #a855f7;
+}
+
 /* LIST VIEW (CARDS WITH THUMBNAILS) */
 .quizListContainer {
   display: flex;
@@ -42,6 +66,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
+  text-decoration: none; /* νέο - για χρήση σε <Link> στη σελίδα /quizzes */
 }
 
 .quizRow:hover {
