@@ -1,11 +1,10 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { client } from '@/sanity/lib/client';
-import QuizPlayer from '@/components/QuizCard/QuizPlayer';
-import styles from '@/components/QuizCard/QuizCard.module.css';
+import QuizDetailClient from './QuizDetailClient';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 async function getQuiz(slug: string) {
@@ -23,7 +22,8 @@ async function getQuiz(slug: string) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const quiz = await getQuiz(params.slug);
+  const { slug } = await params;
+  const quiz = await getQuiz(slug);
   if (!quiz) return {};
   return {
     title: `${quiz.title} | SPOTX Quiz`,
@@ -34,7 +34,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export const revalidate = 60;
 
 export default async function QuizPage({ params }: Props) {
-  const quiz = await getQuiz(params.slug);
+  const { slug } = await params;
+  const quiz = await getQuiz(slug);
 
   if (!quiz) {
     notFound();
@@ -42,10 +43,7 @@ export default async function QuizPage({ params }: Props) {
 
   return (
     <div style={{ maxWidth: '700px', margin: '0 auto', padding: '150px 20px 60px 20px', width: '100%' }}>
-      <h1 style={{ color: '#fff', fontSize: '24px', marginBottom: '20px' }}>{quiz.title}</h1>
-      <div className={styles.mainBox}>
-        <QuizPlayer quiz={quiz} />
-      </div>
+      <QuizDetailClient quiz={quiz} />
     </div>
   );
 }
