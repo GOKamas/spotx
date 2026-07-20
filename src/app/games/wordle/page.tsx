@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import Image from 'next/image';
 import Header from '@/components/Header/Header';
 import WordleGame from '@/components/WordleGame/WordleGame';
 import styles from './WordlePage.module.css';
@@ -15,25 +14,13 @@ export default function WordlePage() {
       <Header />
       <div className={styles.pageWrapper}>
 
-        {/* CUSTOM COVER IMAGE */}
-        <div className={styles.coverWrapper}>
-          <Image
-            src="/games/wordle-cover.webp"
-            alt="SPOTX Wordle"
-            width={800}
-            height={300}
-            className={styles.coverImage}
-            priority
-          />
-        </div>
-
         <h1 className={styles.title}>WORDLE</h1>
-        <p className={styles.subtitle}>ΒΡΕΣ ΤΗ ΛΕΞΗ ΣΕ 6 ΠΡΟΣΠΑΘΕΙΕΣ</p>
 
-        {/* ΕΞΗΓΗΣΗ ΧΡΩΜΑΤΩΝ */}
+        {/* ΟΔΗΓΙΕΣ ΠΑΙΧΝΙΔΙΟΥ */}
         <div className={styles.legend}>
+          <h2 className={styles.legendTitle}>ΠΩΣ ΠΑΙΖΕΤΑΙ</h2>
           <p className={styles.legendIntro}>
-            Μετά από κάθε προσπάθεια, τα γράμματα αλλάζουν χρώμα ώστε να σε καθοδηγήσουν προς τη σωστή λέξη:
+            Μάντεψε τη μυστική 5γράμματη λέξη σε 6 προσπάθειες. Πληκτρολόγησε μια λέξη (με το πληκτρολόγιο ή τα κουμπιά στην οθόνη) και πάτα ENTER για να την υποβάλεις. Μετά από κάθε προσπάθεια, τα γράμματα αλλάζουν χρώμα ώστε να σε καθοδηγήσουν προς τη σωστή λέξη:
           </p>
           <div className={styles.legendRow}>
             <span className={`${styles.legendSwatch} ${styles.swatchCorrect}`}>Α</span>
